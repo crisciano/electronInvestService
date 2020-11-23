@@ -1,9 +1,11 @@
 const puppeteer = require('puppeteer');
+const { logger } = require('../utils/logger');
 
 class FiisServices {
 
     getFiis = () => {
         return new Promise(async (resolve, reject)  => {
+            logger.info('Create Promise service getFiis...')
             const browser = await puppeteer.launch({
                 args: [
                   '--no-sandbox',
@@ -12,6 +14,12 @@ class FiisServices {
             });
             const page = await browser.newPage()
             await page.goto(process.env.URL)
+
+            process.on('unhandledRejection', (reason, p) => {
+                logger.error('Unhandled Rejection at: Promise', p, 'reason:', reason);
+                browser.close();
+            });
+            
             
             const result = await page.evaluate(() => {
         
