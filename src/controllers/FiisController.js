@@ -12,7 +12,11 @@ class ProductsController {
     // eslint-disable-next-line no-async-promise-executor
     return new Promise(async (resolve, reject) => {
       try {
-          const fiis = await FiisService.getFiis()
+        let fiis = await FiisService.getFiis()
+
+        // filter objct empty
+        fiis = fiis.filter(v => Object.keys(v).length !== 0);
+        
         resolve(fiis || [])
       } catch (err) {
         console.log('getProduts controller', err)

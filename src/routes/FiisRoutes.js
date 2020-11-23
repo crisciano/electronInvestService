@@ -8,6 +8,7 @@ const { loadLogs } = require('../routes/logsRouter')
 router.get('/', async (req, res) => {
   try {
     const products = await FiisController.getFiis()
+    logger.info('Request Get in getFiis...'+ new Date())
     res.status(200).json(products)
   } catch (err) {
     logger.error('Error of MS &&' + JSON.stringify(err))

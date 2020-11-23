@@ -24,4 +24,5 @@ npm start
 
 ```javascritp
 GET /v1/getFiis
+GET /v1/getFiis/test
 ```
