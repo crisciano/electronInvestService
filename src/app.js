@@ -1,8 +1,8 @@
 'use strict'
 
 const express = require('express')
-const bodyParser = require('body-parser')
 const FiisRoutes = require('./routes/FiisRoutes')
+const MagicFormulaRoutes = require('./routes/MagicFormulaRoutes')
 const path = require('path')
 const cors = require('cors')
 
@@ -12,8 +12,9 @@ app.set('view engine', 'ejs')
 
 app.use(cors())
 app.use(express.static(path.join(__dirname, '/public')))
-app.use(bodyParser.urlencoded({ extended: true }))
-app.use(bodyParser.json())
+app.use(express.urlencoded({ extended: true }))
+app.use(express.json())
 app.use('/v1/getFiis', FiisRoutes)
+app.use('/v1/magicFormula', MagicFormulaRoutes)
 
 module.exports = app
