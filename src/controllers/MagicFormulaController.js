@@ -3,6 +3,7 @@ const { genericError } = require('../utils/Message')
 const MagicFormulaService = require('../services/MagicFormulaService')
 const filters = require('../utils/filters')
 const Helpers = require('../helpers/Helpers')
+const { KEYS } = require('../config/config')
 
 class MagicFormulaController {
 
@@ -17,15 +18,7 @@ class MagicFormulaController {
                 fiis = fiis.filter(v => Object.keys(v).length !== 0);
         
                 // filtro por keys
-                const data = ["id", "setor", "preco", "liquidez", "DY", "DY_medio_12m", "P_VPA"] 
-                fiis = fiis.map(fii => {
-                    return Object.keys(fii)
-                            .filter(key => data.includes(key) )
-                            .reduce( (obj, key) => {
-                                obj[key]= fii[key]
-                                return obj
-                            }, {})
-                })
+                fiis = Helpers.filterByKeys( fiis, KEYS.fiis )
         
                 // remove fundos sem preço e sem liquidez "N/A" "-9999999999"
                 const filterKeys = Object.keys(filters);
@@ -49,7 +42,7 @@ class MagicFormulaController {
                     return fii
                 })
                 
-                // order por dy medio dos ultimos 12 meses de menor para o maior
+                // order por p-pva medio dos ultimos 12 meses de menor para o maior
                 fiis =  Helpers.sortByKeyCres(fiis, 'P_VPA' )
         
                 // ranking_pvpa
@@ -66,9 +59,13 @@ class MagicFormulaController {
         
                 // ordermagic_formula de menor para maior
                 fiis =  Helpers.sortByKeyCres(fiis, 'magic_formula' )
-        
+                
+                // normalização dos dados
+                fiis = Helpers.normalize('fii', fiis)
+
                 // calcular media e mediana menor que 15%
                 // mediana a soma de todos os dividendo do ultimo ano dividido por 12
+
         
                 
                 resolve(fiis || [])
@@ -89,8 +86,8 @@ class MagicFormulaController {
                 // roic/ev_ebit
 
                 // filtro por keys
-                const keys = ["companyName", "ticker", "p_L", "eV_Ebit", "roe", "roic", "liquidezMediaDiaria"] 
-                acoes = Helpers.filterByKeys( acoes, keys )
+                // const keys = ["companyName", "ticker", "p_L", "eV_Ebit", "roe", "roic", "liquidezMediaDiaria"] 
+                acoes = Helpers.filterByKeys( acoes, KEYS.acoes )
 
                 // remove acoes de baixa liquidez
                 acoes  = acoes.filter(acao => acao.liquidezMediaDiaria > 150000 )

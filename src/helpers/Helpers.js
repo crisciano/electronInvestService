@@ -1,8 +1,8 @@
+const normalize = require('../utils/normalize')
+
+
 class Helpers {
 
-    // sortByKeyDesc(array, key) {
-    //     return array.sort((a, b) => a[key] - b[key] );
-    // }
     sortByKeyCres(array, key) {
         return array.sort((a, b) => {
             if (a[key] > b[key]) return 1;
@@ -37,6 +37,16 @@ class Helpers {
                         obj[key]= fii[key]
                         return obj
                     }, {})
+        })
+    }
+
+    normalize (type, list ) {
+        return list.map(fii => {
+            var obj = {}
+            var keysFiis = Object.keys(fii)
+            var values = keysFiis.map(key => typeof normalize[type][key] === "function" ? normalize[type][key](fii[key]) : fii[key]) 
+            keysFiis.map((key, id )=> obj[key] = values[id]  )
+            return obj
         })
     }
 }
