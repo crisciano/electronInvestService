@@ -4,5 +4,14 @@ module.exports = {
   },
   genericError (func, err) {
     return `Error in ${func}: ${err}`
+  },
+  genericMessage(status, success, message) {
+    return {
+      success,
+      message: {
+        status,
+        message
+      }
+    }
   }
 }
