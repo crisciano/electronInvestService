@@ -48,22 +48,19 @@ class BarsiAnalizeService {
 
     newAnalize(url) {
         return new Promise(async (resolve, reject) => {
-            const options = {
-                dumpio: false,
-                ignoreHTTPSErrors: true,
-                headless: false,
-                timeout: 100000
-            }
-
             // const options = {
             //     dumpio: false,
-            //     headless: true,
-            //     // timeout: 100000,
-            //     args: [
-            //       '--no-sandbox',
-            //       '--disable-setuid-sandbox',
-            //     ],
+            //     ignoreHTTPSErrors: true,
+            //     headless: false,
+            //     timeout: 100000
             // }
+
+            const options = {
+                args: [
+                    '--no-sandbox',
+                    '--disable-setuid-sandbox',
+                ],
+            }
 
             const browser = await puppeteer.launch(options);
             // const browser = await puppeteer.launch();
