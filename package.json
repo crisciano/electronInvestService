@@ -1,5 +1,5 @@
 {
-  "name": "products_list",
+  "name": "invest_service",
   "author": "Crisciano S. Botelho",
   "version": "1.0.0",
   "scripts": {
@@ -9,11 +9,6 @@
   "config": {
     "port": "3000"
   },
-  "publicUrls": [
-    "/ccstorex/custom/v1/products",
-    "/ccstorex/custom/v1/products/test",
-    "/ccstorex/custom/v1/products/logs"
-  ],
   "main": "src/app.js",
   "license": "MIT",
   "dependencies": {
@@ -23,7 +18,7 @@
     "dotenv": "^8.2.0",
     "ejs": "^2.6.1",
     "express": "^4.17.1",
-    "puppeteer": "^5.5.0",
+    "puppeteer": "^10.2.0",
     "winston": "^3.3.3"
   },
   "devDependencies": {
