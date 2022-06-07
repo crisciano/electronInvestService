@@ -17,6 +17,19 @@ router.get('/', async (req, res) => {
     }
 })
 
+router.post('/', async (req, res) => {
+    try {
+        const example = await AnalizeController.analize(req.body)
+        res.status(200).json(example)
+        // res.status(200).json(req.query)
+    } catch (err) {
+        console.log(err);
+        // const statusCode = err.response.status
+        // logger.error('Received Error of webhook &&' + JSON.stringify(err))
+        res.status('500').json({ success: false, message: 'Manual Review Failed', err })
+    }
+})
+
 router.get('/test', (req, res) => {
     res.status(200).send('Products route test! OK!')
 })
