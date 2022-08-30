@@ -61,7 +61,7 @@ fiisController = (id, time, base, roof) => {
             // resolve(BarsiAnalizeService.newAnalize(urlDy))
             const { dividends, symbol } = await BarsiAnalizeService.analize(urlDy);
             const { lastPrice: price } = await BarsiAnalizeService.analize(urlData);
-            const { data: historicals = [] } = await BarsiAnalizeService.generic(urlHistoricals + '/year/5')
+            const { data: historicals = [] } = await BarsiAnalizeService.generic(urlHistoricals + '/year/1')
 
             const analize = sanitize(dividends, price, time, symbol, roof, historicals)
 
@@ -91,7 +91,7 @@ stocksController = (id, time, base, roof) => {
 
                     const dy = BarsiAnalizeService.analize(urlDy + type)
                     const data = BarsiAnalizeService.analize(urlData + type)
-                    const historical = BarsiAnalizeService.generic(urlHistoricals + type + '/year/5')
+                    const historical = BarsiAnalizeService.generic(urlHistoricals + type + '/year/1')
 
                     const promises = await Promise.all([dy, data, historical])
                     const { dividends, symbol } = promises[0]
