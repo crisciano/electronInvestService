@@ -56,12 +56,14 @@ fiisController = (id, time, base, roof) => {
             // https://mfinance.com.br/api/v1/fiis
             const urlDy = base + '/fiis/dividends/' + cod
             const urlData = base + '/fiis/' + cod
+            const urlHistoricals = process.env.HISTORY_URL + cod
 
             // resolve(BarsiAnalizeService.newAnalize(urlDy))
             const { dividends, symbol } = await BarsiAnalizeService.analize(urlDy);
             const { lastPrice: price } = await BarsiAnalizeService.analize(urlData);
+            const { data: historicals = [] } = await BarsiAnalizeService.generic(urlHistoricals + '/year/5')
 
-            const analize = sanitize(dividends, price, time, symbol, roof)
+            const analize = sanitize(dividends, price, time, symbol, roof, historicals)
 
             resolve(analize || {})
         } catch (error) {
@@ -74,15 +76,14 @@ fiisController = (id, time, base, roof) => {
 stocksController = (id, time, base, roof) => {
     return new Promise(async (resolve, reject) => {
         try {
-            const actionTypes = [3, 4, 11]
+            const actionTypes = [3, 4, 6, 11]
             // const actionTypes = [3]
 
             const result = []
 
             const urlDy = base + '/stocks/dividends/' + id
             const urlData = base + '/stocks/' + id
-
-            // const cod = id
+            const urlHistoricals = process.env.HISTORY_URL + id
 
             for (const id in actionTypes) {
                 if (Object.hasOwnProperty.call(actionTypes, id)) {
@@ -90,15 +91,17 @@ stocksController = (id, time, base, roof) => {
 
                     const dy = BarsiAnalizeService.analize(urlDy + type)
                     const data = BarsiAnalizeService.analize(urlData + type)
+                    const historical = BarsiAnalizeService.generic(urlHistoricals + type + '/year/5')
 
-                    const promises = await Promise.all([dy, data])
+                    const promises = await Promise.all([dy, data, historical])
                     const { dividends, symbol } = promises[0]
                     const { lastPrice: price } = promises[1]
-
+                    const { data: historicals = [] } = promises[2]
+                    
                     if (dividends) {
                         const dy = dividends.map(item => ({ ...item, payDate: item.date }))
 
-                        const analize = sanitize(dy, price, time, symbol, roof)
+                        const analize = sanitize(dy, price, time, symbol, roof, historicals)
 
                         result.push(analize)
                     }
@@ -116,7 +119,7 @@ stocksController = (id, time, base, roof) => {
 }
 
 
-sanitize = (dividends, price, time, symbol, roof) => {
+sanitize = (dividends, price, time, symbol, roof, historicals) => {
 
     const currentYear = new Date().getFullYear()
 
@@ -142,7 +145,8 @@ sanitize = (dividends, price, time, symbol, roof) => {
         return: Number(((mediaYear * 100) / price).toFixed(2)),
         roof: Number(((mediaYear * 100) / roof).toFixed(2)),
         mediaPrice: Number(mediaYear.toFixed(2)),
-        price
+        price,
+        historicals
     }
 }
 
