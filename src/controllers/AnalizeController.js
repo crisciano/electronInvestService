@@ -131,13 +131,13 @@ sanitize = (dividends, price, time, symbol, roof, historicals) => {
     // reduce values by year
     dy = sanitizeValuesDy(dy)
     // remove the last year
-    dy = dy.filter(({ year }) => year !== currentYear)
+    dy = dy.filter(({ year }) => year < currentYear)
     // filter the last years
     dy = dy.slice(Math.max(dy.length - time, 1))
 
     const valueDy = dy.reduce((acum, { value }) => acum + value, 0)
     // media dos dy
-    const mediaYear = Number(valueDy.toFixed(2)) / time
+    const mediaYear = Number(valueDy.toFixed(2)) / dy.length
 
     return {
         id: symbol,
