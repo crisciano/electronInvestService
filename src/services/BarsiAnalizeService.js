@@ -25,6 +25,22 @@ class BarsiAnalizeService {
             }
         })
     }
+    
+    generic(url, method) {
+        return new Promise((resolve, reject) => {
+            try {
+                axios({url, method})
+                    .then(res => resolve(res.data))
+                    .catch(err => {
+                        logger.error(genericError('generic - axios', err))
+                        reject(err)
+                    })
+            } catch (err) {
+                logger.error(genericError('generic', err))
+                reject(err)
+            }
+        })
+    }
 }
 
 module.exports = new BarsiAnalizeService()
