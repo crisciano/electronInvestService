@@ -21,6 +21,8 @@ module.exports = {
             "roe", 
             "roic",
             "lucros_Cagr5", 
+            "vpa",
+            "lpa",
             "liquidezMediaDiaria"
         ] 
     }

@@ -84,24 +84,27 @@ stocksController = (id, time, base, roof) => {
             const urlDy = base + '/stocks/dividends/' + id
             const urlData = base + '/stocks/' + id
             const urlHistoricals = process.env.HISTORY_URL + id
+            const urlIndicators = base + '/stocks/indicators?symbols=' + id
 
             for (const id in actionTypes) {
                 if (Object.hasOwnProperty.call(actionTypes, id)) {
                     const type = actionTypes[id];
 
-                    const dy = BarsiAnalizeService.analize(urlDy + type)
-                    const data = BarsiAnalizeService.analize(urlData + type)
-                    const historical = BarsiAnalizeService.generic(urlHistoricals + type + '/year/1')
-
-                    const promises = await Promise.all([dy, data, historical])
+                    const PDy = BarsiAnalizeService.analize(urlDy + type)
+                    const PData = BarsiAnalizeService.analize(urlData + type)
+                    const PHistorical = BarsiAnalizeService.generic(urlHistoricals + type + '/year/1')
+                    const PIndicators = BarsiAnalizeService.analize(urlIndicators + type)
+                    
+                    const promises = await Promise.all([PDy, PData, PHistorical, PIndicators])
                     const { dividends, symbol } = promises[0]
                     const { lastPrice: price } = promises[1]
                     const { data: historicals = [] } = promises[2]
+                    const { indicators } = promises[3]
                     
                     if (dividends) {
                         const dy = dividends.map(item => ({ ...item, payDate: item.date }))
 
-                        const analize = sanitize(dy, price, time, symbol, roof, historicals)
+                        const analize = sanitize(dy, price, time, symbol, roof, historicals, indicators[0])
 
                         result.push(analize)
                     }
@@ -119,7 +122,7 @@ stocksController = (id, time, base, roof) => {
 }
 
 
-sanitize = (dividends, price, time, symbol, roof, historicals) => {
+sanitize = (dividends, price, time, symbol, roof, historicals, indicators) => {
 
     const currentYear = new Date().getFullYear()
 
@@ -139,6 +142,12 @@ sanitize = (dividends, price, time, symbol, roof, historicals) => {
     // media dos dy
     const mediaYear = Number(valueDy.toFixed(2)) / dy.length
 
+    const indicator = indicators && sanitizeIndicators(indicators)
+    
+    const roofBG = indicators && calculateBG(indicator?.itens)
+    
+    // Math.sqrt(22.5 * 4.29 * 23.68)
+    
     return {
         id: symbol,
         dividends: dy,
@@ -146,8 +155,33 @@ sanitize = (dividends, price, time, symbol, roof, historicals) => {
         roof: Number(((mediaYear * 100) / roof).toFixed(2)),
         mediaPrice: Number(mediaYear.toFixed(2)),
         price,
-        historicals
+        historicals,
+        type: indicator?.type,
+        segment: indicator?.segment,
+        subSector: indicator?.subSector,
+        indicators: indicator?.itens,
+        roofBG
     }
+}
+
+function calculateBG(itens){
+    const result = itens.filter(item => item.name === "VPA" || item.name === "LPA")
+    return (result.length === 2)
+        ? Number((Math.sqrt(22.5 * result[0].value * result[1].value)).toFixed(2))
+        : 0
+}
+
+function sanitizeIndicators(indicators){
+    let obj = {}
+    let itens = []
+    for (let index = 0; index < Object.keys(indicators).length; index++) {
+        const key = Object.keys(indicators)[index]
+        const item = indicators[key]
+        if( typeof item === "object") itens.push(item)
+        else obj[key] = item  
+    }
+    obj['itens'] = itens 
+    return obj
 }
 
 function sanitizeValuesDy(result) {
