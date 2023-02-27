@@ -9,6 +9,9 @@
   "config": {
     "port": "3000"
   },
+  "engines": {
+    "node": "18.x"
+  },
   "main": "src/app.js",
   "license": "MIT",
   "dependencies": {
