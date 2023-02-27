@@ -1,0 +1,16 @@
+{
+    "version": 2,
+    "installCommand": "yarn",
+    "builds": [
+        {
+            "src": "./index.js",
+            "use": "@vercel/node"
+        }
+    ],
+    "routes": [
+        {
+            "src": "/(.*)",
+            "dest": "/"
+        }
+    ]
+}
