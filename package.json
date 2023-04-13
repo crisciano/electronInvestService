@@ -21,7 +21,7 @@
     "dotenv": "^8.2.0",
     "ejs": "^2.6.1",
     "express": "^4.17.1",
-    "puppeteer": "^10.2.0",
+    "puppeteer": "^19.8.5",
     "winston": "^3.3.3"
   },
   "devDependencies": {
