@@ -12,19 +12,19 @@ module.exports = {
             "P_VPA"
         ],
         acoes: [
-            "companyName", 
+            "companyname", 
             "ticker", 
             "price", 
-            "p_L", 
+            "p_l", 
             "dy", 
-            "eV_Ebit", 
+            "ev_ebit", 
             "roe", 
             "roic",
-            "lucros_Cagr5", 
+            "lucros_cagr5", 
             "vpa",
             "lpa",
-            "margemLiquida",
-            "liquidezMediaDiaria"
+            "margemliquida",
+            "liquidezmediadiaria"
         ] 
     }
 

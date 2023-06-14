@@ -76,7 +76,7 @@ fiisController = (id, time, base, roof) => {
 stocksController = (id, time, base, roof) => {
     return new Promise(async (resolve, reject) => {
         try {
-            const actionTypes = [3, 4, 6, 11]
+            const actionTypes = [3, 4, 5, 6, 11]
             // const actionTypes = [3]
 
             const result = []
@@ -92,7 +92,7 @@ stocksController = (id, time, base, roof) => {
 
                     const PDy = BarsiAnalizeService.analize(urlDy + type)
                     const PData = BarsiAnalizeService.analize(urlData + type)
-                    const PHistorical = BarsiAnalizeService.generic(urlHistoricals + type + '/year/1')
+                    const PHistorical = BarsiAnalizeService.generic(urlHistoricals + type + '/year/5')
                     const PIndicators = BarsiAnalizeService.analize(urlIndicators + type)
                     
                     const promises = await Promise.all([PDy, PData, PHistorical, PIndicators])
