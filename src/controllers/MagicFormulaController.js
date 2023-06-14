@@ -86,24 +86,24 @@ class MagicFormulaController {
                 // roic/ev_ebit
 
                 // filtro por keys
-                // const keys = ["companyName", "ticker", "p_L", "eV_Ebit", "roe", "roic", "liquidezMediaDiaria"] 
+                // const keys = ["companyName", "ticker", "p_L", "ev_ebit", "roe", "roic", "liquidezmediadiaria"] 
                 acoes = Helpers.filterByKeys( acoes, KEYS.acoes )
-
+                
                 // remove acoes de baixa liquidez
-                acoes  = acoes.filter(acao => acao.liquidezMediaDiaria > 150000 )
-
+                acoes  = acoes.filter(acao => acao.liquidezmediadiaria > 150000 )
+                
                 // remove acoes com p/l negativo
-                acoes  = acoes.filter(acao => acao.p_L > 0 )
-
-                // remove acoes com eV_Ebit negativo
-                acoes  = acoes.filter(acao => acao.eV_Ebit > 0 )
-
+                acoes  = acoes.filter(acao => acao.p_l > 0 )
+                
+                // remove acoes com ev_ebit negativo
+                acoes  = acoes.filter(acao => acao.ev_ebit > 0 )
+                
                 // lista de bancos
                 const bancos = acoes.filter(acao => acao.roic ===  undefined)
 
                 // remove roic igual a undefined
                 acoes = acoes.filter(acao => acao.roic !==  undefined)
-
+                
                 // ordernar roic de menor para maior
                 acoes = Helpers.sortByKeyDesc(acoes, "roic")
 
@@ -118,7 +118,7 @@ class MagicFormulaController {
                 bancos.map(banco => acoes.push(banco))
 
                 // ordernar roic de menor para maior
-                acoes = Helpers.sortByKeyCres(acoes, "eV_Ebit")
+                acoes = Helpers.sortByKeyCres(acoes, "ev_ebit")
 
                 // ranking_evebit
                 acoes = acoes.map((acao, key)=> {
@@ -157,17 +157,17 @@ class MagicFormulaController {
                 // roe/p_L
 
                 // filtro por keys
-                const keys = ["companyName", "ticker", "p_L", "eV_Ebit", "roe", "roic", "liquidezMediaDiaria"] 
+                const keys = ["companyname", "ticker", "p_l", "ev_ebit", "roe", "roic", "liquidezmediadiaria"] 
                 acoes = Helpers.filterByKeys( acoes, keys )
 
                 // remove acoes de baixa liquidez
-                acoes  = acoes.filter(acao => acao.liquidezMediaDiaria > 150000 )
+                acoes  = acoes.filter(acao => acao.liquidezmediadiaria > 150000 )
 
                 // remove acoes com p/l negativo
-                acoes  = acoes.filter(acao => acao.p_L > 0 )
+                acoes  = acoes.filter(acao => acao.p_l > 0 )
 
-                // remove acoes com eV_Ebit negativo
-                acoes  = acoes.filter(acao => acao.eV_Ebit > 0 )
+                // remove acoes com ev_ebit negativo
+                acoes  = acoes.filter(acao => acao.ev_ebit > 0 )
 
                 // ordernar roe crescente menor para maior
                 acoes = Helpers.sortByKeyCres(acoes, "roe")
@@ -179,7 +179,7 @@ class MagicFormulaController {
                 })
 
                 // ordernar pl decrescente maior para menor
-                acoes = Helpers.sortByKeyDesc(acoes, "p_L")
+                acoes = Helpers.sortByKeyDesc(acoes, "p_l")
 
                 // ranking_pl 
                 acoes = acoes.map((acao, key)=> {
@@ -194,7 +194,7 @@ class MagicFormulaController {
                 })
 
                 // // ordernar roic de maior para menor
-                acoes = Helpers.sortByKeyDesc(acoes, "magic_formula")
+                acoes = Helpers.sortByKeyCres(acoes, "magic_formula")
 
 
                 resolve(acoes || [])
