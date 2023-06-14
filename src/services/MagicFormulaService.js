@@ -89,6 +89,7 @@ class MagicFormulaService {
   };
 
   getAcoes = (search) => {
+    logger.info("Create Promise service getAcoes...");
     return new Promise((resolve, reject) => {
       try {
         // CategoryType 2 = fiis 1 = ações

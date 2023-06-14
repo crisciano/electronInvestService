@@ -2,14 +2,13 @@ module.exports = {
 
     KEYS: {
         fiis : [
-            "id", 
+            "ticker", 
             "setor", 
-            "preco", 
-            "liquidez", 
-            "DY", 
-            "DY_medio_12m", 
-            "DY_acum_12m", 
-            "P_VPA"
+            "valor", 
+            "liquidezmediadiaria", 
+            "yeld", 
+            "media_yield_12m", 
+            "p_vpa"
         ],
         acoes: [
             "companyname", 
@@ -28,10 +27,10 @@ module.exports = {
         ] 
     }
 
-}
+} 
 
 // ações keys
-// ticker,price,p_L,dy,p_VP,p_Ebit,p_Ativo,eV_Ebit,margemBruta,margemEbit,margemLiquida,p_SR,p_CapitalGiro,p_AtivoCirculante,giroAtivos,roe,roa,roic,dividaliquidaPatrimonioLiquido,dividaLiquidaEbit,pl_Ativo,passivo_Ativo,liquidezCorrente,peg_Ratio,receitas_Cagr5,lucros_Cagr5,liquidezMediaDiaria,vpa,lpa,valorMercado
+// companyid,companyname,dividaLiquidaebit,dividaliquidapatrimonioliquido,dy,ev_ebit,giroativos,liquidezcorrente,liquidezmediadiaria,lpa,lucros_cagr5,margembruta,margemebit,margemliquida,p_ativo,p_ativocirculante,p_capitalgiro,p_ebit,p_l,p_sr,p_vp,passivo_ativo,peg_ratio,pl_ativo,price,receitas_cagr5,roa,roe,roic,sectorid,sectorname,segmentid,segmentname,subsectorid,subsectorname,ticker,valormercado,vpa,
 
 //fiis keys
-// id,setor,preco,liquidez,dividendo,DY,DY_acum_3m,DY_acum_6m,DY_acum_12m,DY_medio_3m,DY_medio_6m,DY_medio_12m,DY_ano,variacao_preco,rentabilidade_periodo,rentabilidade_acumulada,patrimonio_liq,VPA,P_VPA,DY_patrimonial,variacao_patrimonial,rentabilidade_patrimonial_periodo,rentabilidade_patrimonial_acumulada,vacancia_fisica,vacancia_financeira,quantidade_ativos,
+// ano, ativos, cotacao_fechamento, dividendo, liquidezmediadiaria, media_yield_3m, media_yield_6m, media_yield_12m, p_vpa, patrimonio, pl, post_id, post_title, pvp, rentabilidade, rentabilidade_mes, setor, setor_slug, soma_yield_3m, soma_yield_6m, soma_yield_12m, soma_yield_ano_corrente, ticker, v_financeira, v_fisica, valor, variacao_cotacao_mes, vpa, vpa_change, vpa_rent, vpa_rent_m, vpa_yield, yeld, yield_vpa_3m, yield_vpa_3m_sum, yield_vpa_6m, yield_vpa_6m_sum, yield_vpa_12m, yield_vpa_12m_sum,     }

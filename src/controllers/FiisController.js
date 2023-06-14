@@ -16,27 +16,10 @@ class ProductsController {
         // let fiis
         // let fiis = await FiisService.getFiis();
 
-
-        let otherInfos = await getFiisFull();
         // filter objct empty
         fiis = fiis.filter((v) => Object.keys(v).length !== 0);
 
         fiis = fiis.map((fii) => {
-          let other = otherInfos.filter((v) => v.ticker === fii.ticker)[0];
-
-          if (other) {
-            fii.liquidezmediadiaria = other.liquidezmediadiaria
-              ? other.liquidezmediadiaria
-              : 0;
-            fii.numero_cotistas = other.numerocotistas
-              ? other.numerocotistas
-              : 0;
-            fii.cagr = other.cota_cagr ? other.cota_cagr : 0;
-          } else {
-            fii.numero_cotistas = 0;
-            fii.cagr = 0;
-          }
-
           fii.valor = fii.valor === "-9999999999" ? 0 : fii.valor;
           fii.liquidezmediadiaria = fii.liquidezmediadiaria === "-9999999999" ? 0 : fii.liquidezmediadiaria;
           fii.p_vpa =

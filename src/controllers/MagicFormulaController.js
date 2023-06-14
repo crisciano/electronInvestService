@@ -1,6 +1,7 @@
 const { logger } = require('../utils/logger')
 const { genericError } = require('../utils/Message')
 const MagicFormulaService = require('../services/MagicFormulaService')
+const FiisService = require("../services/FiisService");
 const filters = require('../utils/filters')
 const Helpers = require('../helpers/Helpers')
 const { KEYS } = require('../config/config')
@@ -12,7 +13,8 @@ class MagicFormulaController {
         return new Promise(async (resolve, reject) => {
             try {
                 // let fiis
-                let fiis = await MagicFormulaService.getFiis()
+                // let fiis = await MagicFormulaService.getFiis()
+                let fiis = await FiisService.getFiisNew()
         
                 // filter objct empty
                 fiis = fiis.filter(v => Object.keys(v).length !== 0);
@@ -20,21 +22,15 @@ class MagicFormulaController {
                 // filtro por keys
                 fiis = Helpers.filterByKeys( fiis, KEYS.fiis )
         
-                // remove fundos sem preço e sem liquidez "N/A" "-9999999999"
+                // remove fundos sem preço e sem liquidezmediadiaria "N/A" "-9999999999"
                 const filterKeys = Object.keys(filters);
                 fiis = fiis.filter(fii => filterKeys.every(key => (!filters[key].length)? true : filters[key](fii[key])));
-        
-                // calculo de liquidez
-                fiis = fiis.map(fii => { 
-                            fii.liquidez = (fii.liquidez * fii.preco).toFixed(2)
-                            return fii
-                        })
                 
-                // remove fundos de baixa liquidez
-                fiis = fiis.filter(fii => fii.liquidez > 200000.00)
+                // remove fundos de baixa liquidezmediadiaria
+                fiis = fiis.filter(fii => fii.liquidezmediadiaria > 200000.00)
         
                 // order por dy medio dos ultimos 12 meses de maior para menor
-                fiis =  Helpers.sortByKeyDesc(fiis, 'DY_medio_12m' )
+                fiis =  Helpers.sortByKeyDesc(fiis, 'media_yield_12m' )
                 
                 // ranking_dym
                 fiis = fiis.map((fii, key)=> {
@@ -43,7 +39,7 @@ class MagicFormulaController {
                 })
                 
                 // order por p-pva medio dos ultimos 12 meses de menor para o maior
-                fiis =  Helpers.sortByKeyCres(fiis, 'P_VPA' )
+                fiis =  Helpers.sortByKeyCres(fiis, 'p_vpa' )
         
                 // ranking_pvpa
                 fiis = fiis.map((fii, key)=> {
@@ -86,10 +82,10 @@ class MagicFormulaController {
                 // roic/ev_ebit
 
                 // filtro por keys
-                // const keys = ["companyName", "ticker", "p_L", "ev_ebit", "roe", "roic", "liquidezmediadiaria"] 
+                // const keys = ["companyName", "ticker", "p_L", "ev_ebit", "roe", "roic", "liquidezmediadiariamediadiaria"] 
                 acoes = Helpers.filterByKeys( acoes, KEYS.acoes )
                 
-                // remove acoes de baixa liquidez
+                // remove acoes de baixa liquidezmediadiaria
                 acoes  = acoes.filter(acao => acao.liquidezmediadiaria > 150000 )
                 
                 // remove acoes com p/l negativo
@@ -157,11 +153,11 @@ class MagicFormulaController {
                 // roe/p_L
 
                 // filtro por keys
-                const keys = ["companyname", "ticker", "p_l", "ev_ebit", "roe", "roic", "liquidezmediadiaria"] 
+                const keys = ["companyname", "ticker", "p_l", "ev_ebit", "roe", "roic", "liquidezmediadiariamediadiaria"] 
                 acoes = Helpers.filterByKeys( acoes, keys )
 
-                // remove acoes de baixa liquidez
-                acoes  = acoes.filter(acao => acao.liquidezmediadiaria > 150000 )
+                // remove acoes de baixa liquidezmediadiaria
+                acoes  = acoes.filter(acao => acao.liquidezmediadiariamediadiaria > 150000 )
 
                 // remove acoes com p/l negativo
                 acoes  = acoes.filter(acao => acao.p_l > 0 )
